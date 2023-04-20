@@ -2,6 +2,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.Assert;
@@ -298,6 +299,56 @@ public class ZippoTest {
 
         System.out.println(listOfIds.get(1));
         Assert.assertTrue(listOfIds.contains(1060492));
+    }
+
+    @Test
+    public void extractData3(){
+        // send get request to https://gorest.co.in/public/v1/users.
+        // extract all names from data to an List
+
+        List<String> nameList = given()
+                .when()
+                .get("/users")
+                .then()
+                .log().body()
+                .statusCode(200)
+                .extract().path("data.name");
+
+        System.out.println(nameList.get(5));
+        Assert.assertEquals(nameList.get(5),"Ranjit Devar");
+    }
+    @Test
+    public void extractData4(){
+        Response response = given()
+                .when()
+                .get("/users")
+                .then()
+                .log().body()
+                .statusCode(200)
+                .extract().response();
+
+        List<Integer> ListOfIds = response.path("data.id");
+        List<String> ListOfNames = response.path("data.name");
+        int limit = response.path("meta.pagination.limit");
+        String currentLink = response.path("meta.pagination.link.current");
+
+        System.out.println("ListOfIds = " + ListOfIds);
+        System.out.println("ListOfName = " + ListOfNames);
+        System.out.println("limit = " + limit);
+        System.out.println("currentLink " + currentLink);
+
+        Assert.assertTrue(ListOfNames.contains("Rev.Bhadraksh Gill"));
+        Assert.assertTrue(ListOfIds.contains(1078203));
+        Assert.assertEquals(limit,10);
+    }
+    @Test
+    public void extractJsonPOJO() {
+        // Location                                     // Place
+        // String post code                               String place name;
+        // String country;                                String longitude;
+        // String country abbreviation;                   String state;
+        // List<Place> places;                            String state abbreviation;
+                                                        // String latitude;
     }
 }
 
