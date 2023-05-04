@@ -6,16 +6,16 @@ import java.util.ArrayList;
 
 public class Location {
 
-    String postCode;
+    String postCode; // post code
     String country;
-    String countryAbbreviation;
+    String countryAbbreviation; // country abbreviation
     ArrayList<Place> places;
 
     public String getPostCode() {
         return postCode;
     }
 
-    @JsonProperty()
+    @JsonProperty("post code")
     public void setPostCode(String postCode) {
         this.postCode = postCode;
     }
@@ -32,6 +32,7 @@ public class Location {
         return countryAbbreviation;
     }
 
+    @JsonProperty("country abbreviation")
     public void setCountryAbbreviation(String countryAbbreviation) {
         this.countryAbbreviation = countryAbbreviation;
     }
